@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.0/raphael-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://flowchart.js.org/flowchart-latest.js"></script>
+    <script src="D:/Finserv/finserv-emi-card/app.js"></script>
+    <style>
+        #one {
+            border-radius: 25px;
+            padding: 5px;
+        }
+
+         #outside {
+            width: 100%;
+            text-align: center;
+
+        }
+        #three {
+            border-radius: 25px;
+            padding: 5px;
+        }
+
+        #two {
+            border-radius: 25px;
+            padding: 5px;
+        }
+        </style> 
+    <script>
+       
+        window.onload = function () {
+            let flow2 = document.getElementById("code2")
+            let f2 = flow2.style.display = 'none'
+    
+            let chart2 = flowchart.parse(flow2.value)
+            chart2.drawSVG('canvas')
+
+         
+            let name = "<%= name %>"
+            $('[id^=name]').text(name)
+            let mob = "<%= mob %>"
+            $('[id^=mob]').text(mob);
+            let otp = "<%= otp %>"
+            $('[id^=otp]').text(otp);
+            let dob = "<%= dob %>"
+            $('[id^=dob]').text(dob);
+            let pin = "<%= pin %>"
+            $('[id^=pin]').text(pin);
+            let address = "<%= address %>"
+            $('[id^=addr]').text(address);
+            let pan = "<%= pan %>"
+            $('[id^=pan]').text(pan);
+            let email = "<%= email %>"
+            $('[id^=email]').text(email);
+            let resType = "<%= resType %>"
+            $('[id^=resitype]').text(resType);
+            let empType = "<%= empType %>"
+            $('[id^=emptype]').text(empType);
+            let empName = "<%= empName %>"
+            $('[id^=empname]').text(empName);
+            let oemail = "<%= oemail %>"
+            $('[id^=oemail]').text(oemail)
+            let thanks = "<%= thanks %>"
+            $('[id^=thanks]').text(thanks)
+            
+        };
+
+        function dateCall(id)
+        {
+            var defaultDate;
+            if (id == 'one') 
+                { defaultDate = Date.now() - 86400000}
+    
+            if (id == 'two') 
+                {defaultDate = Date.now() - 2*(86400000)}
+        
+            if (id == 'three') 
+                {defaultDate = Date.now() - 3*(86400000)}
+
+
+        $.ajax({
+        type: "POST",
+        url: 'https://development.jubi.ai/finserv-emi-analytics/',
+        data: {
+            'button' : defaultDate
+        },
+        success: function (data) {
+            console.log(data)
+            console.log('success')
+        },
+
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR + "<->" + textStatus + "<->" + errorThrown)
+        }
+    });
+
+
+               
+        }
+    </script>
+</head>
+
+<body>
+        <button type= "submit" id="three" onclick="dateCall(this.id)"> 3 days ago </button>
+        <button type= "submit" id="two" onclick="dateCall(this.id)"> 2 days ago </button>
+        <button type= "submit" id="one" onclick="dateCall(this.id)"> 1 day ago </button>
+            
+    <div id="outside">
+        <div>
+
+            <textarea id="code2" style="width: 100%;" rows="15">
+                start=>start: Apply for EMI Card
+                thanks=>end: Thankyoustage
+                name=>operation: NameName
+                otp=>operation: OTPOTP
+                pin=>operation: Pincodein
+                addr=>operation: Full AddressAddr
+                pan=>operation: PancardCard
+                email=>operation: EmailEmail
+                resitype=>operation: ResidencetypeResidence
+                emptype=>operation: EmploymentTypeEmployment
+                empname=>operation: EmploymentNameEmployment
+                oemail=>operation: Office Email Officeoffic
+                mob=>operation: MobileNum
+                dob=>operation: DOBdob 
+                start->name->mob->otp->dob->pin->addr->pan->email->resitype->emptype->empname->oemail->thanks                                 
+            </textarea>
+        </div>
+    </div>
+    <div id="canvas"></div>
+</body>
+
+</html>
