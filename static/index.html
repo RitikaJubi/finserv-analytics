@@ -7,25 +7,38 @@
     <script src="http://flowchart.js.org/flowchart-latest.js"></script>
     <script src="D:/Finserv/finserv-emi-card/app.js"></script>
     <style>
-        #one {
+         #one {
             border-radius: 25px;
+            background-color: yellow;
             padding: 5px;
         }
 
-         #outside {
+        #outside {
             width: 100%;
+            background-color: yellow;
             text-align: center;
 
         }
+
         #three {
             border-radius: 25px;
+            background-color: yellow;
             padding: 5px;
         }
 
         #two {
             border-radius: 25px;
+            background-color: yellow;
             padding: 5px;
         }
+
+        #zero {
+            border-radius: 25px;
+            background-color: yellow;
+            padding: 5px;
+
+        }
+
         </style> 
     <script>
        
@@ -34,8 +47,12 @@
             let f2 = flow2.style.display = 'none'
     
             let chart2 = flowchart.parse(flow2.value)
-            chart2.drawSVG('canvas')
-
+            chart2.drawSVG('canvas', {
+                'flowstate': {
+                    'start': { 'fill': 'yellow', 'font-color': 'black' },
+                    'end': { 'fill': 'yellow', 'font-color': 'black' }
+                }
+            });
          
             let name = "<%= name %>"
             $('[id^=name]').text(name)
