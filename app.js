@@ -32,7 +32,7 @@ var obj = {}
 //var objl = {}
 
 
-app.listen(3000, () => console.log('Listening at 3000'));
+app.listen(8101, () => console.log('Listening at 8101'));
 
 //ejs settings
 app.use(express.static('static'));
