@@ -38,7 +38,7 @@ function dateCall(id) {
 
     $.ajax({
         type: "POST",
-        url: 'https://development.jubi.ai/finserv-emi-analytics/buttonData',
+        url: 'http://development.jubi.ai/finserv-emi-analytics/buttonData',
         data: {
             'button': defaultDate
         },
