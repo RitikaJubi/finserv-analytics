@@ -32,13 +32,13 @@ var obj = {}
 //var objl = {}
 
 
-app.listen(8101, () => console.log('Listening at 8101'));
+app.listen(3000, () => console.log('Listening at 3000'));
 
 //ejs settings
 app.use(express.static('static'));
 
 app.set('view engine', 'ejs')
-app.use(express.static(__dirname + '/index'));
+app.use(express.static(__dirname + '/static'));
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -53,12 +53,16 @@ app.get('/analytics',function(req,res){
   
 app.post('/buttonData', function(req, res){
   if(req.body.button){
+  //   let token = req.body.button
+  //   console.log(token)
+  //   res.send(getRecords(url))
+  //  }
+
+  // else{
     let token = req.body.button
+    // console.log(token)
     res.send(processCallLater(parseInt(token)))
    }
-  // else{
-  //   res.sendStatus(403)
-  // }
 })
 
 
@@ -102,16 +106,15 @@ function verified(req, res, next) {
 
 }
 
-
 function getRecords(url) {
   return new Promise(async function (resolve, reject) {
     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, db) {
       if (err) throw err;
       var dbo = db.db(dbName);
-      const rec = await dbo.collection("analyticsStageCountSchema").find({ $and: [{ "projectId": "finservVoiceQa_011271007071" }, { "intentName": "NewEmiCard" },{"fromTimestamp" : { $gte : ((Date.now())- (86400000)) }},{"toTimestamp" : { $lte :  ((Date.now())) }}] }).toArray()
-      const rec2 = await dbo.collection("analyticsStageCountSchema").find({ $and: [{ "projectId": "finservVoiceQa_011271007071" }, { "intentName": "NewEmiCard" },{"fromTimestamp" : { $gte : ((Date.now())- 4 *(86400000)) }},{"toTimestamp" : { $lte :  ((Date.now()))}}] }).toArray()
-      //fs.writeFileSync('data.json', rec2)
-      //console.log(done)
+      const rec = await dbo.collection("analyticsStageCountSchema").find({ $and: [{ "projectId": "finservVoiceQa_011271007071" }, { "intentName": "NewEmiCard" },{"fromTimestamp" : { $gte : (Date.now()-86400000) }},{"toTimestamp" : { $lte : (Date.now())}}] }).toArray()
+      const rec2 = await dbo.collection("analyticsStageCountSchema").find({ $and: [{ "projectId": "finservVoiceQa_011271007071" }, { "intentName": "NewEmiCard" },{"fromTimestamp" : { $gte : (Date.now()- 4*86400000) }},{"toTimestamp" : { $lte :  (Date.now()) }}] }).toArray()
+  
+    
       db.close()
       resolve(rec)
       fs.writeFileSync('data.json', JSON.stringify(rec2))
@@ -122,6 +125,19 @@ function getRecords(url) {
 
 // function processCall(url){
 getRecords(url).then(data => {
+  name = 0
+,mob = 0
+,otp = 0
+,dob = 0
+,pin = 0
+,pan = 0
+,email = 0
+,resType = 0
+,empType = 0
+,empName = 0
+,address = 0
+,oemail = 0
+,thanks = 0
   data.forEach(function(element){
       
       if(element.stageName == "name")
@@ -164,42 +180,27 @@ getRecords(url).then(data => {
       thanks = thanks + element.stageCount
 
   })
-
-  obj.name = "NAME: "+name
-  obj.mob = "MOB: "+mob
-  obj.otp = "OTP: "+otp
-  obj.dob = "DOB: " +dob
-  obj.pin = "PIN: " +pin
+  obj = {}
+  obj.name = "NAME: "+ name
+  obj.mob = "MOB: "+ mob
+  obj.otp = "OTP: "+ otp
+  obj.dob = "DOB: " + dob
+  obj.pin = "PIN: " + pin
   obj.address = "ADDRESS: "+ address
-  obj.pan = "PAN: "+pan
-  obj.email = "EMAIL: "+email
-  obj.resType = "RESIDENCE TYPE: " +resType
-  obj.empType = "EMPLOYMENT TYPE: " +empType
-  obj.empName = "EMPLOYMENT NAME: " +empName   
-  obj.oemail = "OFFICIAL EMAIL: " +oemail
+  obj.pan = "PAN: "+ pan
+  obj.email = "EMAIL: "+ email
+  obj.resType = "RESIDENCE TYPE: " + resType
+  obj.empType = "EMPLOYMENT TYPE: " + empType
+  obj.empName = "EMPLOYMENT NAME: " + empName   
+  obj.oemail = "OFFICIAL EMAIL: " + oemail
   obj.thanks = "THANK YOU: " + thanks
   console.log(obj) 
 
+  
+  // console.log(Date.now() - 86400000)
+  
+
 });
-
-
-
-
-
-// function getRecordsLater(token) {
-//   let url = "mongodb+srv://sharedParaRead:k07r4FDUpSedawJ6@sharedparramato-sy1qy.mongodb.net/shared-parramato?retryWrites=true&w=majority"
-//   return new Promise(async function (resolve, reject) {
-//     MongoClient.connect(url, { useNewUrlParser: true }, async function (err, db) {
-//       if (err) throw err;
-//       var dbo = db.db(dbName);
-//       const rec = await dbo.collection("analyticsStageCountSchema").find({ $and: [{ "projectId": "finservVoiceQa_011271007071" }, { "intentName": "NewEmiCard" },{"fromTimestamp" : { $gte : token}},{"toTimestamp" : { $lte : (Date.now() - (1000*60*60)) }}] }).toArray()
-//       //console.log(rec)
-//       db.close()
-//       resolve(rec)
-//     })
-//   });
-//   }
-
 
 function processCallLater(token){
 name = 0
@@ -218,6 +219,7 @@ name = 0
 
   fs.readFile('data.json', (err, data) => {
     data1 = (JSON.parse((data)))
+    console.log(data1)
     data1.forEach(function(element){
       if(element.toTimestamp <= (token)  && element.fromTimestamp >= (token - (86400000))) {
 
@@ -278,5 +280,5 @@ name = 0
   obj.thanks = "THANK YOU: " + thanks
 
 console.log(obj)
-  })
+})
 }

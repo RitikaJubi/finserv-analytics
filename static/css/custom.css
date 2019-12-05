@@ -1,0 +1,31 @@
+#one {
+    border-radius: 25px;
+    background-color: yellow;
+    padding: 5px;
+}
+
+#outside {
+    width: 100%;
+    background-color: yellow;
+    text-align: center;
+
+}
+
+#three {
+    border-radius: 25px;
+    background-color: yellow;
+    padding: 5px;
+}
+
+#two {
+    border-radius: 25px;
+    background-color: yellow;
+    padding: 5px;
+}
+
+#zero {
+    border-radius: 25px;
+    background-color: yellow;
+    padding: 5px;
+
+}
