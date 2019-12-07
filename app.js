@@ -117,8 +117,8 @@ function getRecords(url) {
     
       db.close()
       resolve(rec)
-      // fs.writeFileSync('data.json', JSON.stringify(rec2))
-      // console.log("done")
+      fs.writeFileSync('data.json', JSON.stringify(rec2))
+      console.log("done")
     })
   });
   }
